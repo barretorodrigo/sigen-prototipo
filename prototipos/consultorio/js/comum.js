@@ -32,9 +32,9 @@ async function carregarJson(nomeArquivo) {
 /* ============================================================
    Persistência local dos consultórios (protótipo)
    ------------------------------------------------------------
-   Como não há backend, usamos localStorage para manter as
-   alterações entre páginas (novo cadastro, cancelamento, etc.).
-   A primeira leitura semeia o storage com os dados mock.
+  Como não há backend, usamos sessionStorage para manter as
+  alterações apenas na aba atual (novo cadastro, cancelamento, etc.).
+  Cada nova aba começa novamente a partir dos dados mock.
    ============================================================ */
 
 const CHAVE_STORAGE_CONSULTORIOS = 'sigen.prototipo.consultorios';
@@ -45,7 +45,7 @@ const CHAVE_STORAGE_CONSULTORIOS = 'sigen.prototipo.consultorios';
  */
 async function carregarConsultorios() {
   try {
-    const bruto = localStorage.getItem(CHAVE_STORAGE_CONSULTORIOS);
+    const bruto = sessionStorage.getItem(CHAVE_STORAGE_CONSULTORIOS);
     if (bruto) {
       return JSON.parse(bruto);
     }
@@ -63,7 +63,7 @@ async function carregarConsultorios() {
  */
 function salvarConsultorios(lista) {
   try {
-    localStorage.setItem(CHAVE_STORAGE_CONSULTORIOS, JSON.stringify(lista));
+    sessionStorage.setItem(CHAVE_STORAGE_CONSULTORIOS, JSON.stringify(lista));
   } catch (_) {
     // Ignora silenciosamente quando o storage não está disponível.
   }
