@@ -304,6 +304,18 @@ function formatarCnpj(valor) {
 }
 
 /**
+ * Formata um CPF no padrão 000.000.000-00.
+ */
+function formatarCpf(valor) {
+  const d = (valor || '').replace(/\D/g, '').slice(0, 11);
+  let saida = d;
+  if (d.length > 3) saida = `${d.slice(0, 3)}.${d.slice(3)}`;
+  if (d.length > 6) saida = `${d.slice(0, 3)}.${d.slice(3, 6)}.${d.slice(6)}`;
+  if (d.length > 9) saida = `${d.slice(0, 3)}.${d.slice(3, 6)}.${d.slice(6, 9)}-${d.slice(9)}`;
+  return saida;
+}
+
+/**
  * Formata um telefone no padrão (00) 0000-0000 ou (00) 00000-0000.
  */
 function formatarTelefone(valor) {
@@ -340,6 +352,41 @@ function validarCnpj(cnpj) {
 }
 
 /**
+ * Valida CPF pela rotina de dígitos verificadores.
+ */
+function validarCpf(cpf) {
+  const d = (cpf || '').replace(/\D/g, '');
+  if (d.length !== 11) return false;
+  if (/^(\d)\1+$/.test(d)) return false;
+
+  const calcularDigito = (base, pesoInicial) => {
+    let soma = 0;
+    for (let i = 0; i < base.length; i++) {
+      soma += parseInt(base[i], 10) * (pesoInicial - i);
+    }
+    const resto = (soma * 10) % 11;
+    return resto === 10 ? 0 : resto;
+  };
+
+  const dig1 = calcularDigito(d.slice(0, 9), 10);
+  const dig2 = calcularDigito(d.slice(0, 10), 11);
+  return dig1 === parseInt(d[9], 10) && dig2 === parseInt(d[10], 10);
+}
+
+/**
+ * Retorna o documento identificador do consultório (CPF ou CNPJ),
+ * priorizando o que estiver preenchido. Quando ambos estiverem ausentes,
+ * retorna tipo nulo e valor vazio para que a UI exiba '—'.
+ */
+function obterDocumentoConsultorio(consultorio) {
+  const cnpj = (consultorio && consultorio.cnpj) ? String(consultorio.cnpj).trim() : '';
+  const cpf = (consultorio && consultorio.cpf) ? String(consultorio.cpf).trim() : '';
+  if (cnpj) return { tipo: 'cnpj', rotulo: 'CNPJ', valor: cnpj };
+  if (cpf) return { tipo: 'cpf', rotulo: 'CPF', valor: cpf };
+  return { tipo: null, rotulo: 'CPF/CNPJ', valor: '' };
+}
+
+/**
  * Valida e-mail em formato padrão.
  */
 function validarEmail(email) {
@@ -373,9 +420,22 @@ function rotuloStatus(status) {
   const mapa = {
     'ativo': 'Ativo',
     'cancelado': 'Cancelado',
-    'em-analise': 'Em análise'
+    'em-analise': 'Em análise',
+    'vencida': 'Vencida'
   };
   return mapa[status] || status;
+}
+
+/**
+ * Retorna a classe CSS do badge para um determinado status do registro.
+ */
+function classeBadgeStatus(status) {
+  switch (status) {
+    case 'ativo': return 'badge--ativo';
+    case 'cancelado': return 'badge--cancelado';
+    case 'vencida': return 'badge--vencida';
+    default: return 'badge--analise';
+  }
 }
 
 /**

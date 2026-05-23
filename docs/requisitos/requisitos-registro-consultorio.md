@@ -36,7 +36,7 @@ Permitir que o profissional autenticado registre consultórios vinculados ao seu
 
 Como profissional de enfermagem autenticado,
 quero visualizar meus consultórios cadastrados,
-para que eu possa acompanhar meus registros ativos e anteriores.
+para que eu possa acompanhar meus registros ativos, vencidos e anteriores.
 
 Como profissional de enfermagem autenticado,
 quero cadastrar um novo consultório,
@@ -86,7 +86,7 @@ para que meu cadastro permaneça consistente no SIGEN.
 **Critérios de Aceite:**
 - [ ] O sistema exibe uma tela de listagem ao acessar a funcionalidade.
 - [ ] O sistema apresenta os consultórios já cadastrados para o profissional, quando existirem.
-- [ ] O sistema exibe na listagem o status do registro como Ativo, Cancelado ou Em análise.
+- [ ] O sistema exibe na listagem o status do registro como Ativo, Vencida, Cancelado ou Em análise.
 - [ ] Quando não houver registros, a tabela deve ser exibida sem linhas de dados e com o conteúdo `Não possui registro de consultório`.
 
 **Prioridade:** Alta
@@ -181,16 +181,17 @@ para que meu cadastro permaneça consistente no SIGEN.
 **Pré-condições:** Usuário no formulário de registro de consultório.
 
 **Critérios de Aceite:**
-- [ ] O sistema exige o preenchimento de Nome, Correio Eletrônico, Telefone e CNPJ.
+- [ ] O sistema exige o preenchimento de Nome, Correio Eletrônico, Telefone e ao menos um identificador fiscal entre CPF e CNPJ.
 - [ ] O sistema permite o preenchimento opcional de Site.
 - [ ] O sistema valida o Correio Eletrônico em formato padrão de e-mail.
-- [ ] O sistema valida o CNPJ informado como CNPJ válido.
+- [ ] O sistema valida o CPF informado como CPF válido, quando esse for o identificador preenchido.
+- [ ] O sistema valida o CNPJ informado como CNPJ válido, quando esse for o identificador preenchido.
 
 **Prioridade:** Alta
 
 **Dependências:** RF-006
 
-**Observações:** O Site é campo livre e opcional.
+**Observações:** O Site é campo livre e opcional. O formulário deve aceitar cadastros identificados por pessoa física ou pessoa jurídica.
 
 ### RF-008 — Coletar horário e dias de atendimento
 
@@ -342,7 +343,7 @@ para que meu cadastro permaneça consistente no SIGEN.
 - [ ] O sistema identifica campos obrigatórios não preenchidos.
 - [ ] O sistema identifica ausência do anexo obrigatório.
 - [ ] O sistema impede o envio até que todas as pendências sejam resolvidas.
-- [ ] O sistema exige o preenchimento de Nome, Correio Eletrônico, Telefone, Horário de atendimento, Dias de atendimento, Endereço, CEP, Bairro, Município, CNPJ, UF, Atividades exercidas, Registro de especialidade junto ao COREN e Alvará de funcionamento.
+- [ ] O sistema exige o preenchimento de Nome, Correio Eletrônico, Telefone, Horário de atendimento, Dias de atendimento, Endereço, CEP, Bairro, Município, CPF ou CNPJ, UF, Atividades exercidas, Registro de especialidade junto ao COREN e Alvará de funcionamento.
 
 **Prioridade:** Alta
 
@@ -418,10 +419,11 @@ para que meu cadastro permaneça consistente no SIGEN.
 
 **Critérios de Aceite:**
 - [ ] O sistema exibe no certificado o nome do consultório.
-- [ ] O sistema exibe no certificado o CNPJ do consultório.
+- [ ] O sistema exibe no certificado o CPF ou o CNPJ informado no cadastro do consultório, conforme o identificador aplicável ao registro.
 - [ ] O sistema exibe no certificado as especialidades vinculadas ao consultório.
 - [ ] O sistema exibe no certificado a identificação do profissional de enfermagem responsável.
 - [ ] O sistema exibe no certificado a data de início da vigência.
+- [ ] O sistema exibe no certificado a data de validade do registro.
 - [ ] O sistema exibe no certificado um QR Code de validação com finalidade decorativa no protótipo.
 - [ ] O sistema exibe no certificado texto institucional de concessão do registro.
 
@@ -486,7 +488,7 @@ para que meu cadastro permaneça consistente no SIGEN.
 | Complemento | Opcional | Sem validação adicional registrada |
 | Bairro | Obrigatório | Sem validação adicional registrada |
 | Município | Obrigatório | Preenchimento automático a partir da consulta de CEP, quando disponível |
-| CNPJ | Obrigatório | Deve ser um CNPJ válido |
+| CPF ou CNPJ | Obrigatório | Deve exigir ao menos um dos identificadores e validar o documento informado conforme o tipo |
 | UF | Obrigatório | Preenchimento automático a partir da consulta de CEP, quando disponível |
 | Atividades exercidas | Obrigatório | Campo livre com limite de 5000 caracteres |
 | Registro de especialidade junto ao COREN | Obrigatório | Deve ser listado a partir das especialidades do sistema |
@@ -617,10 +619,10 @@ para que meu cadastro permaneça consistente no SIGEN.
 
 ### RN-009 — Status possíveis do registro de consultório
 
-**Descrição:** O sistema deve considerar apenas os status Ativo, Cancelado e Em análise para os registros de consultório.
+**Descrição:** O sistema deve considerar apenas os status Ativo, Vencida, Cancelado e Em análise para os registros de consultório.
 
 **Critérios de Aceite:**
-- [ ] O sistema utiliza apenas os status Ativo, Cancelado e Em análise para representar o estado do registro.
+- [ ] O sistema utiliza apenas os status Ativo, Vencida, Cancelado e Em análise para representar o estado do registro.
 - [ ] O status do registro é exibido na listagem e na visualização quando aplicável.
 - [ ] O estado do registro permanece consistente com as ações realizadas no fluxo.
 
@@ -684,17 +686,18 @@ para que meu cadastro permaneça consistente no SIGEN.
 
 **Critérios de Aceite:**
 - [ ] O sistema não disponibiliza certificado para registros Em análise.
+- [ ] O sistema não disponibiliza certificado para registros Vencida.
 - [ ] O sistema não disponibiliza certificado para registros Cancelado.
 - [ ] O sistema disponibiliza certificado somente quando o status do registro for Ativo.
 
-### RN-011 — Certificado não possui prazo de validade
+### RN-011 — Registro e certificado possuem data de validade
 
-**Descrição:** O Certificado de Registro de Consultório não deve apresentar data de vencimento ou prazo final de validade.
+**Descrição:** O registro de consultório deve possuir data de validade, que deve ser exibida no certificado e utilizada para caracterizar o status Vencida quando aplicável.
 
 **Critérios de Aceite:**
-- [ ] O certificado apresenta apenas a data de início da vigência.
-- [ ] O certificado não exibe data de expiração.
-- [ ] O sistema não exige renovação por prazo na funcionalidade prototipada.
+- [ ] O certificado apresenta a data de início da vigência.
+- [ ] O certificado apresenta a data de validade do registro.
+- [ ] O sistema deve permitir classificar o registro como Vencida quando a validade estiver expirada.
 
 ### RN-012 — QR Code do certificado é decorativo no protótipo
 

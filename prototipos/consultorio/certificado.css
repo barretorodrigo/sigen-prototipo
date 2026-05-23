@@ -417,6 +417,63 @@ body.pagina-certificado {
 }
 
 /* ----------------------------------------------------------
+   Celular em retrato: rotaciona a folha para simular A4 paisagem
+   ocupando toda a tela (preview "como se fosse a impressão").
+   ---------------------------------------------------------- */
+@media (max-width: 820px) and (orientation: portrait) {
+  body.pagina-certificado {
+    padding: 0;
+    overflow: hidden;
+    min-height: 100dvh;
+    align-items: stretch;
+    justify-content: stretch;
+    background: #1f2937;
+  }
+
+  /* Barra de ações fica fixa no rodapé da tela, acima da folha rotacionada. */
+  .barra-acoes {
+    position: fixed;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    max-width: none;
+    margin: 0;
+    padding: 6px;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.94);
+    border-radius: 8px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+  }
+
+  .barra-acoes__btn {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+
+  /* A folha é posicionada no centro, com largura = altura da viewport
+     (porque será rotacionada 90°) e altura proporcional A4 (210/297). */
+  .folha-certificado {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 100dvh;
+    max-width: 100dvh;
+    height: calc(100dvh * 210 / 297);
+    aspect-ratio: auto;
+    transform: translate(-50%, -50%) rotate(90deg);
+    transform-origin: center center;
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Aviso de indisponibilidade não precisa do tratamento de paisagem. */
+  .certificado-indisponivel {
+    position: relative;
+    margin: 24px auto;
+    max-width: 92%;
+  }
+}
+
+/* ----------------------------------------------------------
    Impressão: paisagem A4, sem barra de ações
    ---------------------------------------------------------- */
 @page {

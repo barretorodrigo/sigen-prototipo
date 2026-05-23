@@ -78,7 +78,12 @@ function exibirIndisponivel(mensagem) {
  */
 function preencherCertificado(consultorio, especialidades) {
   document.getElementById('cert-nome').textContent = consultorio.nome || '—';
-  document.getElementById('cert-cnpj').textContent = consultorio.cnpj || '—';
+
+  // Documento identificador — exibe CPF ou CNPJ conforme o cadastro
+  const documento = obterDocumentoConsultorio(consultorio);
+  document.getElementById('cert-documento-rotulo').textContent = documento.rotulo;
+  document.getElementById('cert-documento').textContent = documento.valor || '—';
+
   document.getElementById('cert-responsavel').textContent = NOME_RESPONSAVEL_PADRAO;
 
   // Especialidades — mapeia ids para nomes legíveis

@@ -24,7 +24,7 @@ const conteudoHtml = `
         <thead>
           <tr>
             <th scope="col">Nome do consultório</th>
-            <th scope="col">CNPJ</th>
+            <th scope="col">CPF/CNPJ</th>
             <th scope="col">Município/UF</th>
             <th scope="col">Cadastro</th>
             <th scope="col">Status</th>
@@ -70,16 +70,18 @@ function renderizarTabela() {
 
   consultoriosEmMemoria.forEach((c) => {
     const linha = document.createElement('tr');
-    const classeBadge = c.status === 'ativo' ? 'badge--ativo'
-      : c.status === 'cancelado' ? 'badge--cancelado'
-      : 'badge--analise';
+    const classeBadge = classeBadgeStatus(c.status);
 
     const podeCancelar = c.status !== 'cancelado';
     const podeEmitirCertificado = c.status === 'ativo';
+    const documento = obterDocumentoConsultorio(c);
+    const documentoExibicao = documento.valor
+      ? `${escaparHtml(documento.valor)} <small class="badge-doc">${documento.rotulo}</small>`
+      : '—';
 
     linha.innerHTML = `
       <td>${escaparHtml(c.nome)}</td>
-      <td>${escaparHtml(c.cnpj)}</td>
+      <td>${documentoExibicao}</td>
       <td>${escaparHtml(c.municipio)}/${escaparHtml(c.uf)}</td>
       <td>${formatarData(c.dataCadastro)}</td>
       <td><span class="badge ${classeBadge}">${rotuloStatus(c.status)}</span></td>

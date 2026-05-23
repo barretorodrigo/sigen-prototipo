@@ -72,12 +72,23 @@ const conteudoHtml = `
         </div>
 
         <div class="col-6">
-          <label class="campo">
-            <span class="campo__rotulo">CNPJ <abbr title="Obrigatório">*</abbr></span>
-            <input class="campo__entrada" type="text" id="cnpj" name="cnpj"
-                   placeholder="00.000.000/0000-00" maxlength="18" required />
-            <span class="campo__erro" id="erro-cnpj"></span>
-          </label>
+          <fieldset class="campo" id="campo-documento">
+            <legend class="campo__rotulo">Identificação fiscal <abbr title="Obrigatório">*</abbr></legend>
+            <div class="grupo-radios" role="radiogroup" aria-label="Tipo do identificador fiscal">
+              <label class="radio-item">
+                <input type="radio" name="tipo-documento" value="cnpj" checked />
+                <span>CNPJ</span>
+              </label>
+              <label class="radio-item">
+                <input type="radio" name="tipo-documento" value="cpf" />
+                <span>CPF</span>
+              </label>
+            </div>
+            <input class="campo__entrada" type="text" id="documento" name="documento"
+                   placeholder="00.000.000/0000-00" maxlength="18" required
+                   aria-describedby="erro-documento" />
+            <span class="campo__erro" id="erro-documento"></span>
+          </fieldset>
         </div>
       </div>
     </section>
@@ -473,8 +484,7 @@ async function carregarPendenciaCoren() {
 /* ----------------------- Máscaras ----------------------- */
 
 function configurarMascaras() {
-  const cnpj = document.getElementById('cnpj');
-  cnpj.addEventListener('input', () => { cnpj.value = formatarCnpj(cnpj.value); });
+  configurarCampoDocumento();
 
   const tel = document.getElementById('telefone');
   tel.addEventListener('input', () => { tel.value = formatarTelefone(tel.value); });
@@ -488,10 +498,51 @@ function configurarMascaras() {
   });
 }
 
+/**
+ * Configura o campo de identificação fiscal para alternar entre CPF e CNPJ
+ * conforme a opção selecionada (máscara, placeholder, limite e validação).
+ */
+function obterTipoDocumentoSelecionado() {
+  const marcado = document.querySelector('input[name="tipo-documento"]:checked');
+  return marcado ? marcado.value : 'cnpj';
+}
+
+function configurarCampoDocumento() {
+  const documento = document.getElementById('documento');
+
+  const aplicarMascara = () => {
+    const tipo = obterTipoDocumentoSelecionado();
+    if (tipo === 'cpf') {
+      documento.value = formatarCpf(documento.value);
+    } else {
+      documento.value = formatarCnpj(documento.value);
+    }
+  };
+
+  const aplicarTipo = () => {
+    const tipo = obterTipoDocumentoSelecionado();
+    if (tipo === 'cpf') {
+      documento.placeholder = '000.000.000-00';
+      documento.maxLength = 14;
+      documento.value = formatarCpf(documento.value);
+    } else {
+      documento.placeholder = '00.000.000/0000-00';
+      documento.maxLength = 18;
+      documento.value = formatarCnpj(documento.value);
+    }
+    validarCampo('documento');
+  };
+
+  documento.addEventListener('input', aplicarMascara);
+  document.querySelectorAll('input[name="tipo-documento"]').forEach((radio) => {
+    radio.addEventListener('change', aplicarTipo);
+  });
+}
+
 /* ----------------------- Validação em tempo real ----------------------- */
 
 function configurarValidacoesEmTempoReal() {
-  const campos = ['nome', 'email', 'telefone', 'cnpj', 'horario-inicio', 'horario-fim',
+  const campos = ['nome', 'email', 'telefone', 'documento', 'horario-inicio', 'horario-fim',
                   'cep', 'endereco', 'bairro', 'municipio', 'uf', 'atividades',
                   'site'];
   campos.forEach((id) => {
@@ -539,10 +590,22 @@ function validarCampo(id) {
       }
       return true;
 
-    case 'cnpj':
-      if (!el.value.trim()) { setarErro(id, 'Informe o CNPJ.'); return false; }
-      if (!validarCnpj(el.value)) { setarErro(id, 'CNPJ inválido.'); return false; }
+    case 'documento': {
+      const tipo = obterTipoDocumentoSelecionado();
+      if (!el.value.trim()) {
+        setarErro(id, tipo === 'cpf' ? 'Informe o CPF.' : 'Informe o CNPJ.');
+        return false;
+      }
+      if (tipo === 'cpf' && !validarCpf(el.value)) {
+        setarErro(id, 'CPF inválido.');
+        return false;
+      }
+      if (tipo === 'cnpj' && !validarCnpj(el.value)) {
+        setarErro(id, 'CNPJ inválido.');
+        return false;
+      }
       return true;
+    }
 
     case 'horario-inicio':
       if (!el.value) { setarErro(id, 'Informe o horário de início.'); return false; }
@@ -905,7 +968,7 @@ function configurarEnvio() {
 }
 
 function enviarFormulario() {
-  const campos = ['nome', 'email', 'telefone', 'cnpj',
+  const campos = ['nome', 'email', 'telefone', 'documento',
                   'horario-inicio', 'horario-fim', 'dias',
                   'cep', 'endereco', 'bairro', 'municipio', 'uf',
                   'atividades', 'especialidades', 'site'];
@@ -985,13 +1048,16 @@ function enviarFormulario() {
  */
 async function persistirNovoConsultorio() {
   const lista = await carregarConsultorios();
+  const tipoDocumento = obterTipoDocumentoSelecionado();
+  const valorDocumento = document.getElementById('documento').value.trim();
   const novo = {
     id: gerarNovoIdConsultorio(lista),
     nome: document.getElementById('nome').value.trim(),
     site: document.getElementById('site').value.trim(),
     email: document.getElementById('email').value.trim(),
     telefone: document.getElementById('telefone').value.trim(),
-    cnpj: document.getElementById('cnpj').value.trim(),
+    cnpj: tipoDocumento === 'cnpj' ? valorDocumento : '',
+    cpf: tipoDocumento === 'cpf' ? valorDocumento : '',
     horarioInicio: document.getElementById('horario-inicio').value,
     horarioFim: document.getElementById('horario-fim').value,
     diasAtendimento: Array.from(

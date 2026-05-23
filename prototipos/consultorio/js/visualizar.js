@@ -49,11 +49,10 @@ function renderizarErro(mensagem) {
 
 function renderizarVisualizacao() {
   const c = consultorioAtual;
-  const classeBadge = c.status === 'ativo' ? 'badge--ativo'
-    : c.status === 'cancelado' ? 'badge--cancelado'
-    : 'badge--analise';
+  const classeBadge = classeBadgeStatus(c.status);
 
   const podeCancelar = c.status !== 'cancelado';
+  const documento = obterDocumentoConsultorio(c);
 
   const diasFormatados = (c.diasAtendimento || []).map(rotuloDia).join(', ');
   const listaEspecialidades = c.especialidades || (c.especialidade ? [c.especialidade] : []);
@@ -78,7 +77,7 @@ function renderizarVisualizacao() {
         <div class="col-12">
           ${dadoLeitura('Nome do consultório', c.nome)}
         </div>
-        <div class="col-6">${dadoLeitura('CNPJ', c.cnpj)}</div>
+        <div class="col-6">${dadoLeitura(documento.rotulo, documento.valor || '—')}</div>
         <div class="col-6">${dadoLeitura('E-mail', c.email)}</div>
         <div class="col-6">${dadoLeitura('Telefone', c.telefone)}</div>
         <div class="col-6">${dadoLeitura('Site', c.site || '—')}</div>
