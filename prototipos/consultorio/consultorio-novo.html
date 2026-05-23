@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SIGEN — Nova solicitação de consultório</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="./css/estilos.css" />
+</head>
+<body>
+  <div id="app"></div>
+
+  <!-- Modal de edição do endereço pessoal -->
+  <div class="modal" id="modal-endereco" role="dialog" aria-modal="true" aria-labelledby="modal-endereco-titulo">
+    <div class="modal__conteudo modal__conteudo--largo">
+      <h2 class="modal__titulo" id="modal-endereco-titulo">Alterar endereço pessoal</h2>
+      <form id="form-endereco-modal" novalidate>
+        <div class="grid-campos">
+          <div class="col-4">
+            <label class="campo">
+              <span class="campo__rotulo">CEP <abbr title="Obrigatório">*</abbr></span>
+              <input class="campo__entrada" type="text" id="ep-cep" maxlength="9" placeholder="00000-000" required />
+              <span class="campo__erro" id="ep-erro-cep"></span>
+            </label>
+          </div>
+          <div class="col-4 acao-alinhada-campo">
+            <button class="btn btn--secundario" type="button" id="ep-botao-buscar-cep">
+              <span class="material-icons">search</span> Buscar CEP
+            </button>
+          </div>
+
+          <div class="col-8">
+            <label class="campo">
+              <span class="campo__rotulo">Endereço <abbr title="Obrigatório">*</abbr></span>
+              <input class="campo__entrada" type="text" id="ep-endereco" required />
+              <span class="campo__erro" id="ep-erro-endereco"></span>
+            </label>
+          </div>
+          <div class="col-4">
+            <label class="campo">
+              <span class="campo__rotulo">Número (opcional)</span>
+              <input class="campo__entrada" type="text" id="ep-numero" maxlength="10" />
+            </label>
+          </div>
+
+          <div class="col-6">
+            <label class="campo">
+              <span class="campo__rotulo">Complemento (opcional)</span>
+              <input class="campo__entrada" type="text" id="ep-complemento" />
+            </label>
+          </div>
+          <div class="col-6">
+            <label class="campo">
+              <span class="campo__rotulo">Bairro <abbr title="Obrigatório">*</abbr></span>
+              <input class="campo__entrada" type="text" id="ep-bairro" required />
+              <span class="campo__erro" id="ep-erro-bairro"></span>
+            </label>
+          </div>
+
+          <div class="col-8">
+            <label class="campo">
+              <span class="campo__rotulo">Município <abbr title="Obrigatório">*</abbr></span>
+              <input class="campo__entrada" type="text" id="ep-municipio" required />
+              <span class="campo__erro" id="ep-erro-municipio"></span>
+            </label>
+          </div>
+          <div class="col-4">
+            <label class="campo">
+              <span class="campo__rotulo">UF <abbr title="Obrigatório">*</abbr></span>
+              <input class="campo__entrada" type="text" id="ep-uf" maxlength="2" required />
+              <span class="campo__erro" id="ep-erro-uf"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="modal__acoes">
+          <button class="btn btn--texto" type="button" id="ep-botao-cancelar">Cancelar</button>
+          <button class="btn btn--primario" type="submit">
+            <span class="material-icons">check</span> Salvar endereço
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="./data/dados.js"></script>
+  <script src="./js/comum.js"></script>
+  <script src="./js/novo.js"></script>
+</body>
+</html>

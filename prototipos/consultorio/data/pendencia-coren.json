@@ -1,0 +1,4 @@
+{
+  "_descricao": "Pendência simulada da regularidade do profissional junto ao Coren. Edite o valor de 'situacaoAtual' para testar diferentes mensagens no envio do formulário. Valores aceitos: regular | financeira | eleitoral | etica",
+  "situacaoAtual": "regular"
+}

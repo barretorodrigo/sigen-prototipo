@@ -1,0 +1,6 @@
+[
+  { "id": "uti", "nome": "UTI" },
+  { "id": "obstetricia", "nome": "Obstetrícia" },
+  { "id": "enfermagem-do-trabalho", "nome": "Enfermagem do Trabalho" },
+  { "id": "feridas", "nome": "Feridas" }
+]

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SIGEN — Visualizar consultório</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="./css/estilos.css" />
+</head>
+<body>
+  <div id="app"></div>
+
+  <!-- Modal de confirmação de cancelamento -->
+  <div class="modal" id="modal-cancelamento" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+    <div class="modal__conteudo">
+      <h2 class="modal__titulo" id="modal-titulo">Confirmar cancelamento</h2>
+      <p class="modal__corpo" id="modal-mensagem">
+        Tem certeza de que deseja cancelar este registro de consultório?
+        Esta ação não poderá ser desfeita.
+      </p>
+      <div class="modal__acoes">
+        <button class="btn btn--texto" type="button" id="botao-modal-cancelar">Voltar</button>
+        <button class="btn btn--perigo" type="button" id="botao-modal-confirmar">Cancelar registro</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="./data/dados.js"></script>
+  <script src="./js/comum.js"></script>
+  <script src="./js/visualizar.js"></script>
+</body>
+</html>
