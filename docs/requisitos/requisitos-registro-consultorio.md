@@ -14,6 +14,7 @@ Permitir que o profissional autenticado registre consultórios vinculados ao seu
 - Listagem de consultórios cadastrados.
 - Ação para criar nova solicitação de registro de consultório.
 - Visualização de registro existente.
+- Visualização do certificado de registro de consultório para registros ativos.
 - Cancelamento de registro existente.
 - Preenchimento dos dados do consultório.
 - Anexo do alvará de funcionamento.
@@ -44,6 +45,10 @@ para que meu local de exercício profissional fique formalmente registrado no SI
 Como profissional de enfermagem autenticado,
 quero cancelar um registro de consultório existente,
 para que o sistema reflita minha situação atual.
+
+Como profissional de enfermagem autenticado,
+quero visualizar o certificado de um consultório com registro ativo,
+para que eu possa comprovar a regularidade do estabelecimento.
 
 Como profissional de enfermagem autenticado,
 quero confirmar ou atualizar meu endereço pessoal durante o fluxo,
@@ -364,6 +369,107 @@ para que meu cadastro permaneça consistente no SIGEN.
 
 **Observações:** O retorno pós-envio, inclusive número de protocolo, ainda precisa ser confirmado.
 
+### RF-017 — Disponibilizar ação para visualizar certificado de consultório ativo
+
+**Descrição:** O sistema deve disponibilizar na listagem de consultórios uma ação específica para visualização do Certificado de Registro de Consultório quando o registro estiver com status Ativo.
+
+**Ator(es):** Profissional de enfermagem autenticado
+
+**Pré-condições:** Existir ao menos um consultório com status Ativo na listagem.
+
+**Critérios de Aceite:**
+- [ ] O sistema exibe a ação de visualização do certificado apenas para registros com status Ativo.
+- [ ] O sistema não exibe a ação de certificado para registros com status Em análise.
+- [ ] O sistema não exibe a ação de certificado para registros com status Cancelado.
+- [ ] A ação de certificado fica disponível na coluna de ações da listagem de consultórios.
+
+**Prioridade:** Alta
+
+**Dependências:** RF-002
+
+**Observações:** A nomenclatura visível da ação pode ser refinada na definição de interface, desde que deixe claro que se trata do certificado.
+
+### RF-018 — Exibir certificado de registro de consultório em nova aba
+
+**Descrição:** O sistema deve abrir o Certificado de Registro de Consultório em nova aba do navegador ao acionar a opção de visualização do certificado.
+
+**Ator(es):** Profissional de enfermagem autenticado, público com acesso ao link
+
+**Pré-condições:** Consultório com status Ativo e acionamento da visualização do certificado.
+
+**Critérios de Aceite:**
+- [ ] Ao acionar a visualização do certificado, o sistema abre o documento em nova aba.
+- [ ] A nova aba apresenta o certificado sem depender de fluxo adicional de autenticação no protótipo.
+- [ ] O certificado pode ser impresso diretamente pela funcionalidade nativa do navegador.
+
+**Prioridade:** Alta
+
+**Dependências:** RF-017
+
+**Observações:** O protótipo não precisa gerar arquivo PDF automaticamente.
+
+### RF-019 — Exibir conteúdo obrigatório do certificado de registro de consultório
+
+**Descrição:** O sistema deve apresentar no certificado as informações institucionais e cadastrais mínimas do registro ativo do consultório.
+
+**Ator(es):** Profissional de enfermagem autenticado, público com acesso ao link
+
+**Pré-condições:** Certificado aberto para um consultório com status Ativo.
+
+**Critérios de Aceite:**
+- [ ] O sistema exibe no certificado o nome do consultório.
+- [ ] O sistema exibe no certificado o CNPJ do consultório.
+- [ ] O sistema exibe no certificado as especialidades vinculadas ao consultório.
+- [ ] O sistema exibe no certificado a identificação do profissional de enfermagem responsável.
+- [ ] O sistema exibe no certificado a data de início da vigência.
+- [ ] O sistema exibe no certificado um QR Code de validação com finalidade decorativa no protótipo.
+- [ ] O sistema exibe no certificado texto institucional de concessão do registro.
+
+**Prioridade:** Alta
+
+**Dependências:** RF-018
+
+**Observações:** O certificado não deve apresentar numeração nesta versão do protótipo.
+
+### RF-020 — Exibir identidade institucional do emissor no certificado
+
+**Descrição:** O sistema deve apresentar o certificado com identidade institucional do Coren responsável pelo registro, com aplicação visual adequada para um documento oficial.
+
+**Ator(es):** Profissional de enfermagem autenticado, público com acesso ao link
+
+**Pré-condições:** Certificado aberto para visualização.
+
+**Critérios de Aceite:**
+- [ ] O sistema exibe no certificado a identificação visual do Coren responsável.
+- [ ] No protótipo, o sistema utiliza o Coren-PE como emissor exibido no certificado.
+- [ ] O certificado apresenta aparência compatível com documento institucional formal.
+- [ ] O conteúdo do certificado permanece legível em tela e em impressão.
+
+**Prioridade:** Média
+
+**Dependências:** RF-018, RF-019
+
+**Observações:** Em versão futura, o emissor deve variar conforme a UF responsável pelo registro.
+
+### RF-021 — Permitir acesso público ao certificado por link direto
+
+**Descrição:** O sistema deve permitir que o Certificado de Registro de Consultório seja acessado por qualquer pessoa que possua o link direto do documento.
+
+**Ator(es):** Público externo, profissional de enfermagem autenticado
+
+**Pré-condições:** Existir certificado disponível para consultório com status Ativo.
+
+**Critérios de Aceite:**
+- [ ] O certificado pode ser visualizado por link direto no protótipo.
+- [ ] O acesso ao certificado não exige autenticação específica no protótipo.
+- [ ] O acesso por link direto exibe o mesmo conteúdo visual do certificado aberto a partir da listagem.
+
+**Prioridade:** Média
+
+**Dependências:** RF-018
+
+**Observações:** O acesso público está restrito ao contexto do protótipo e deverá ser reavaliado em versão produtiva.
+
 ## Detalhamento dos Campos e Validações
 
 | Campo | Obrigatoriedade | Validação confirmada |
@@ -448,6 +554,44 @@ para que meu cadastro permaneça consistente no SIGEN.
 **Dependências:** RF-002, RF-004, RF-005
 
 **Observações:** O modelo detalhado de permissão ainda pode ser refinado.
+
+### RNF-004 — Apresentação adequada do certificado para impressão
+
+**Descrição:** O sistema deve apresentar o certificado em formato visual adequado para impressão direta pelo navegador em página única ou com quebra controlada.
+
+**Ator(es):** Profissional de enfermagem autenticado, público com acesso ao link
+
+**Pré-condições:** Certificado aberto em nova aba.
+
+**Critérios de Aceite:**
+- [ ] O certificado mantém legibilidade quando submetido à impressão pelo navegador.
+- [ ] O conteúdo principal do certificado não sofre perda de informação relevante na impressão.
+- [ ] A formatação visual do certificado preserva caráter institucional em tela e em papel.
+
+**Prioridade:** Média
+
+**Dependências:** RF-018, RF-019, RF-020
+
+**Observações:** A impressão será realizada pelos recursos nativos do navegador.
+
+### RNF-005 — Acessibilidade da ação e do conteúdo do certificado
+
+**Descrição:** O sistema deve garantir identificação textual clara para a ação de certificado e para as informações principais exibidas no documento.
+
+**Ator(es):** Profissional de enfermagem autenticado, público com acesso ao link
+
+**Pré-condições:** Uso da listagem ou do certificado por pessoa com necessidade de tecnologia assistiva.
+
+**Critérios de Aceite:**
+- [ ] A ação de visualização do certificado possui identificação textual compreensível.
+- [ ] As informações principais do certificado são apresentadas em texto legível.
+- [ ] O certificado observa as diretrizes mínimas de acessibilidade do projeto.
+
+**Prioridade:** Média
+
+**Dependências:** RF-017, RF-018, RF-019
+
+**Observações:** Deve observar WCAG 2.1 AA conforme diretrizes do projeto.
 
 ## Regras de Negócio
 
@@ -534,10 +678,48 @@ para que meu cadastro permaneça consistente no SIGEN.
 - [ ] O sistema permite atualizar o endereço pessoal na própria funcionalidade.
 - [ ] O fluxo de confirmação ou atualização fica acessível durante o cadastro.
 
+### RN-010 — Certificado é exclusivo para registro ativo
+
+**Descrição:** O sistema só deve disponibilizar o Certificado de Registro de Consultório para registros que estejam com status Ativo.
+
+**Critérios de Aceite:**
+- [ ] O sistema não disponibiliza certificado para registros Em análise.
+- [ ] O sistema não disponibiliza certificado para registros Cancelado.
+- [ ] O sistema disponibiliza certificado somente quando o status do registro for Ativo.
+
+### RN-011 — Certificado não possui prazo de validade
+
+**Descrição:** O Certificado de Registro de Consultório não deve apresentar data de vencimento ou prazo final de validade.
+
+**Critérios de Aceite:**
+- [ ] O certificado apresenta apenas a data de início da vigência.
+- [ ] O certificado não exibe data de expiração.
+- [ ] O sistema não exige renovação por prazo na funcionalidade prototipada.
+
+### RN-012 — QR Code do certificado é decorativo no protótipo
+
+**Descrição:** O QR Code apresentado no certificado deve ter finalidade exclusivamente ilustrativa no protótipo.
+
+**Critérios de Aceite:**
+- [ ] O certificado exibe QR Code como elemento visual de validação.
+- [ ] O protótipo não depende de validação real por leitura do QR Code.
+- [ ] O comportamento do QR Code pode ser simulado sem integração externa.
+
+### RN-013 — Emissor exibido no protótipo é o Coren-PE
+
+**Descrição:** O protótipo deve exibir o Coren-PE como emissor do certificado, preservando a premissa de que em ambiente real o emissor será o Coren da UF responsável.
+
+**Critérios de Aceite:**
+- [ ] O certificado do protótipo apresenta o Coren-PE como emissor.
+- [ ] O documento não apresenta COFEN como emissor do certificado nesta versão.
+- [ ] O requisito registra que a definição do Coren emissor por estado deverá ser tratada em evolução futura.
+
 ## Pendências para Validação com o Negócio
 
 - Confirmar tipos e tamanho máximo aceitos para o alvará de funcionamento.
 - Confirmar se haverá protocolo, comprovante ou notificação após o envio.
+- Confirmar qual informação cadastral representará formalmente o profissional de enfermagem responsável no certificado.
+- Confirmar se a data de início da vigência corresponderá à data de ativação do registro ou a outro marco de negócio.
 
 ## Próximos Passos Recomendados
 
@@ -545,3 +727,4 @@ para que meu cadastro permaneça consistente no SIGEN.
 2. Detalhar obrigatoriedade e máscaras de cada campo do formulário.
 3. Definir os estados do registro para listagem, visualização e cancelamento.
 4. Especificar os casos de teste derivados das regras de regularidade profissional.
+5. Validar com o negócio o texto institucional definitivo do Certificado de Registro de Consultório.

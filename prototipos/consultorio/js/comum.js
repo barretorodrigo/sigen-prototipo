@@ -114,12 +114,60 @@ function renderizarLayout(idContainer, tituloPagina, contextoHtml) {
       <div class="container-principal">
         <nav class="drawer" id="drawer" aria-label="Menu lateral">
           <h4 class="drawer__titulo">Navegação</h4>
+
           <a class="drawer__item" href="#">
             <span class="material-icons">home</span> Home
           </a>
           <a class="drawer__item" href="#">
             <span class="material-icons">person</span> Meus Dados
           </a>
+          <a class="drawer__item" href="#">
+            <span class="material-icons">assignment_ind</span> Minhas Solicitações
+          </a>
+          <a class="drawer__item" href="#">
+            <span class="material-icons">assignment_ind</span> Minhas Inscrições
+          </a>
+          <a class="drawer__item" href="#">
+            <span class="material-icons">assignment_ind</span> Minhas Especialidades
+          </a>
+          <a class="drawer__item" href="#">
+            <span class="material-icons">print</span> Emissão de Certidões
+          </a>
+
+          <details class="drawer__grupo">
+            <summary class="drawer__grupo-cabecalho">
+              <span class="material-icons">attach_money</span>
+              <span>Área Financeira</span>
+              <span class="material-icons drawer__grupo-seta">expand_more</span>
+            </summary>
+            <div class="drawer__grupo-conteudo">
+              <a class="drawer__item" href="#">
+                <span class="material-icons">paid</span> Situação Financeira
+              </a>
+              <a class="drawer__item" href="#">
+                <span class="material-icons">library_books</span> Extratos
+              </a>
+              <a class="drawer__item" href="#">
+                <span class="material-icons">currency_exchange</span> Solicitações de Ressarcimento
+              </a>
+              <a class="drawer__item" href="#">
+                <span class="material-icons">edit_note</span> Notificações
+              </a>
+            </div>
+          </details>
+
+          <details class="drawer__grupo">
+            <summary class="drawer__grupo-cabecalho">
+              <span class="material-icons">manage_accounts</span>
+              <span>Registro e cadastro</span>
+              <span class="material-icons drawer__grupo-seta">expand_more</span>
+            </summary>
+            <div class="drawer__grupo-conteudo">
+              <a class="drawer__item" href="#">
+                <span class="material-icons">person_add</span> Primeira Inscrição
+              </a>
+            </div>
+          </details>
 
           <details class="drawer__grupo" open>
             <summary class="drawer__grupo-cabecalho">
@@ -139,26 +187,78 @@ function renderizarLayout(idContainer, tituloPagina, contextoHtml) {
 
           <details class="drawer__grupo">
             <summary class="drawer__grupo-cabecalho">
-              <span class="material-icons">manage_accounts</span>
-              <span>Registro e cadastro</span>
+              <span class="material-icons">store_mall_directory</span>
+              <span>Serviços</span>
               <span class="material-icons drawer__grupo-seta">expand_more</span>
             </summary>
             <div class="drawer__grupo-conteudo">
               <a class="drawer__item" href="#">
-                <span class="material-icons">person_add</span> Primeira Inscrição
+                <span class="material-icons">manage_search</span> Cancelamento de inscrição
+              </a>
+              <a class="drawer__item" href="#">
+                <span class="material-icons">manage_search</span> Inscrição remida
+              </a>
+              <a class="drawer__item" href="#">
+                <span class="material-icons">manage_search</span> Inscrição secundária
+              </a>
+              <a class="drawer__item" href="#">
+                <span class="material-icons">manage_search</span> Outra categoria
+              </a>
+              <a class="drawer__item" href="#">
+                <span class="material-icons">manage_search</span> Reinscrição
+              </a>
+              <a class="drawer__item" href="#">
+                <span class="material-icons">manage_search</span> Solicitar especialidade
+              </a>
+              <a class="drawer__item" href="#">
+                <span class="material-icons">manage_search</span> Suspensão de inscrição
+              </a>
+              <a class="drawer__item" href="#">
+                <span class="material-icons">manage_search</span> Transferência entre SIGENs
+              </a>
+              <a class="drawer__item" href="#">
+                <span class="material-icons">manage_search</span> Renovação de carteira
+              </a>
+              <a class="drawer__item" href="#">
+                <span class="material-icons">manage_search</span> 2ª Via de carteira
+              </a>
+              <a class="drawer__item" href="#">
+                <span class="material-icons">manage_search</span> Exercer serviço no exterior
               </a>
             </div>
           </details>
 
           <details class="drawer__grupo">
             <summary class="drawer__grupo-cabecalho">
-              <span class="material-icons">attach_money</span>
-              <span>Área Financeira</span>
+              <span class="material-icons">how_to_reg</span>
+              <span>Processo Ético</span>
+              <span class="material-icons drawer__grupo-seta">expand_more</span>
+            </summary>
+            <div class="drawer__grupo-conteudo">
+              <details class="drawer__grupo drawer__grupo--aninhado">
+                <summary class="drawer__grupo-cabecalho">
+                  <span class="material-icons">report</span>
+                  <span>Denúncia</span>
+                  <span class="material-icons drawer__grupo-seta">expand_more</span>
+                </summary>
+                <div class="drawer__grupo-conteudo">
+                  <a class="drawer__item" href="#">
+                    <span class="material-icons">archive</span> Registrar Denúncia
+                  </a>
+                </div>
+              </details>
+            </div>
+          </details>
+
+          <details class="drawer__grupo">
+            <summary class="drawer__grupo-cabecalho">
+              <span class="material-icons">compare_arrows</span>
+              <span>Eleições</span>
               <span class="material-icons drawer__grupo-seta">expand_more</span>
             </summary>
             <div class="drawer__grupo-conteudo">
               <a class="drawer__item" href="#">
-                <span class="material-icons">paid</span> Situação Financeira
+                <span class="material-icons">how_to_vote</span> Colégio Eleitoral
               </a>
             </div>
           </details>

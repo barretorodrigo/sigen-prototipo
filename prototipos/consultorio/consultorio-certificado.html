@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SIGEN — Certificado de Registro de Consultório</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="./certificado.css" />
+</head>
+<body class="pagina-certificado">
+
+  <!-- Barra de ações (oculta na impressão) -->
+  <div class="barra-acoes" role="toolbar" aria-label="Ações do certificado">
+    <button class="barra-acoes__btn" type="button" id="botao-imprimir">
+      <span class="material-icons" aria-hidden="true">print</span>
+      Imprimir certificado
+    </button>
+    <a class="barra-acoes__btn barra-acoes__btn--secundario" href="./consultorio-lista.html">
+      <span class="material-icons" aria-hidden="true">arrow_back</span>
+      Voltar à listagem
+    </a>
+  </div>
+
+  <!-- Mensagem para registros não-ativos ou inexistentes -->
+  <div class="certificado-indisponivel oculto" id="aviso-indisponivel" role="alert">
+    <span class="material-icons certificado-indisponivel__icone" aria-hidden="true">block</span>
+    <h1 class="certificado-indisponivel__titulo">Certificado não disponível</h1>
+    <p class="certificado-indisponivel__texto" id="aviso-mensagem">
+      Este registro de consultório não está disponível para emissão de certificado.
+    </p>
+    <a class="certificado-indisponivel__link" href="./consultorio-lista.html">Voltar à listagem</a>
+  </div>
+
+  <!-- Folha do certificado (formato paisagem) -->
+  <main class="folha-certificado oculto" id="folha-certificado" aria-labelledby="cert-titulo">
+    <div class="folha-certificado__borda-externa">
+      <div class="folha-certificado__borda-interna">
+
+        <!-- Marca d'água diagonal -->
+        <div class="cert-marca-dagua" aria-hidden="true">COFEN</div>
+
+        <!-- Cabeçalho institucional -->
+        <header class="cert-cabecalho">
+          <img class="cert-cabecalho__logo"
+               src="./img/logo-cofen.png"
+               alt="Logotipo do Conselho Federal de Enfermagem (Cofen)" />
+          <div class="cert-cabecalho__textos">
+            <p class="cert-cabecalho__orgao">Conselho Federal de Enfermagem</p>
+          </div>
+        </header>
+
+        <div class="cert-divisor" aria-hidden="true"></div>
+
+        <!-- Corpo institucional -->
+        <section class="cert-corpo">
+          <h1 class="cert-titulo" id="cert-titulo">Certificado de Registro de Consultório</h1>
+          <p class="cert-subtitulo">Documento institucional de regularidade</p>
+
+          <p class="cert-texto-institucional">
+            O <strong>Conselho Regional de Enfermagem de Pernambuco</strong> certifica,
+            nos termos da legislação vigente e das normas profissionais aplicáveis,
+            que o estabelecimento adiante identificado encontra-se devidamente registrado
+            para a realização de atividades de enfermagem compatíveis com as especialidades
+            aqui descritas, sob responsabilidade de profissional de enfermagem regularmente
+            inscrito neste Conselho.
+          </p>
+
+          <dl class="cert-dados">
+            <div class="cert-dados__linha">
+              <dt>Consultório</dt>
+              <dd id="cert-nome">—</dd>
+            </div>
+            <div class="cert-dados__linha">
+              <dt>CNPJ</dt>
+              <dd id="cert-cnpj">—</dd>
+            </div>
+            <div class="cert-dados__linha">
+              <dt>Profissional de Enfermagem Responsável</dt>
+              <dd id="cert-responsavel">—</dd>
+            </div>
+            <div class="cert-dados__linha">
+              <dt>Especialidades registradas</dt>
+              <dd id="cert-especialidades">—</dd>
+            </div>
+            <div class="cert-dados__linha">
+              <dt>Início da vigência</dt>
+              <dd id="cert-vigencia">—</dd>
+            </div>
+            <div class="cert-dados__linha">
+              <dt>Data de validade</dt>
+              <dd id="cert-validade">—</dd>
+            </div>
+          </dl>
+
+          <p class="cert-clausula">
+            Este certificado tem caráter declaratório de regularidade do registro e
+            permanece em vigor enquanto o estabelecimento mantiver, junto a este Conselho,
+            sua situação cadastral ativa.
+          </p>
+        </section>
+
+        <!-- Rodapé com assinatura e validação -->
+        <footer class="cert-rodape">
+          <div class="cert-local-data">
+            <p id="cert-local-data">Recife/PE, —</p>
+          </div>
+
+          <div class="cert-validacao">
+            <div class="cert-validacao__qrcode" id="cert-qrcode" aria-hidden="true"></div>
+            <p class="cert-validacao__rotulo">Validação digital</p>
+            <p class="cert-validacao__instrucao">Aponte a câmera para validar este certificado.</p>
+          </div>
+        </footer>
+
+      </div>
+    </div>
+  </main>
+
+  <script src="./data/dados.js"></script>
+  <script src="./js/comum.js"></script>
+  <script src="./certificado.js"></script>
+</body>
+</html>

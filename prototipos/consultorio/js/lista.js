@@ -75,6 +75,7 @@ function renderizarTabela() {
       : 'badge--analise';
 
     const podeCancelar = c.status !== 'cancelado';
+    const podeEmitirCertificado = c.status === 'ativo';
 
     linha.innerHTML = `
       <td>${escaparHtml(c.nome)}</td>
@@ -88,6 +89,14 @@ function renderizarTabela() {
              title="Visualizar" aria-label="Visualizar registro de ${escaparHtml(c.nome)}">
             <span class="material-icons">visibility</span>
           </a>
+          ${podeEmitirCertificado ? `
+            <a class="btn--icone" href="./consultorio-certificado.html?id=${encodeURIComponent(c.id)}"
+               target="_blank" rel="noopener"
+               title="Visualizar certificado"
+               aria-label="Visualizar certificado do consultório ${escaparHtml(c.nome)}">
+              <span class="material-icons">workspace_premium</span>
+            </a>
+          ` : ''}
           ${podeCancelar ? `
             <button class="btn--icone" type="button"
                     data-acao-cancelar="${encodeURIComponent(c.id)}"
