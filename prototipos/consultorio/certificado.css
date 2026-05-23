@@ -419,15 +419,18 @@ body.pagina-certificado {
 /* ----------------------------------------------------------
    Celular em retrato: rotaciona a folha para simular A4 paisagem
    ocupando toda a tela (preview "como se fosse a impressão").
+   A folha sempre cabe na viewport; quando o conteúdo extrapolar,
+   o usuário pode rolar livremente.
    ---------------------------------------------------------- */
 @media (max-width: 820px) and (orientation: portrait) {
   body.pagina-certificado {
     padding: 0;
-    overflow: hidden;
     min-height: 100dvh;
-    align-items: stretch;
-    justify-content: stretch;
+    align-items: center;
+    justify-content: center;
     background: #1f2937;
+    overflow: auto;
+    overscroll-behavior: contain;
   }
 
   /* Barra de ações fica fixa no rodapé da tela, acima da folha rotacionada. */
@@ -450,19 +453,29 @@ body.pagina-certificado {
     font-size: 13px;
   }
 
-  /* A folha é posicionada no centro, com largura = altura da viewport
-     (porque será rotacionada 90°) e altura proporcional A4 (210/297). */
+  /* A maior folha A4 paisagem que cabe na viewport:
+     largura_visual = min(100vw, 100dvh * 297/210).
+     Como a folha é rotacionada 90°, no CSS antes da rotação:
+       width (= altura visual)  = min(100dvh, 100vw * 297/210)
+       height (= largura visual) = width * 210/297. */
   .folha-certificado {
+    --largura-css: min(100dvh, calc(100vw * 297 / 210));
     position: fixed;
     top: 50%;
     left: 50%;
-    width: 100dvh;
-    max-width: 100dvh;
-    height: calc(100dvh * 210 / 297);
+    width: var(--largura-css);
+    height: calc(var(--largura-css) * 210 / 297);
+    max-width: none;
     aspect-ratio: auto;
     transform: translate(-50%, -50%) rotate(90deg);
     transform-origin: center center;
     box-shadow: 0 18px 48px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Garante que o conteúdo interno role caso ultrapasse a folha. */
+  .folha-certificado__borda-interna {
+    overflow: auto;
+    overscroll-behavior: contain;
   }
 
   /* Aviso de indisponibilidade não precisa do tratamento de paisagem. */
@@ -482,20 +495,40 @@ body.pagina-certificado {
 }
 
 @media print {
-  body.pagina-certificado {
-    background: #fff;
+  html, body.pagina-certificado {
+    background: #fff !important;
     padding: 0;
+    margin: 0;
     display: block;
+    /* Preserva cores de fundo e da marca d'água na impressão. */
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
+
   .barra-acoes { display: none !important; }
 
+  /* A folha ocupa exatamente a área útil do @page (A4 paisagem com 8mm de margem). */
   .folha-certificado {
     box-shadow: none;
     max-width: none;
     width: 100%;
-    aspect-ratio: auto;
-    height: 100vh;
+    height: auto;
+    aspect-ratio: 297 / 210;
+    transform: none;
+    position: static;
+    page-break-inside: avoid;
+    break-inside: avoid;
   }
 
-  .folha-certificado__borda-externa { inset: 6mm; }
+  .folha-certificado__borda-externa { inset: 4mm; }
+  .folha-certificado__borda-interna {
+    overflow: hidden;
+    padding: 28px 40px 22px;
+  }
+
+  /* Marca d'água estoura em vw quando impressa; fixa em pontos. */
+  .cert-marca-dagua {
+    font-size: 180pt;
+    letter-spacing: 10px;
+  }
 }
